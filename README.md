@@ -1,3 +1,2 @@
-# smart-utility-billing-automation-SUBA-v
-Smart Utility Billing Automation (SUBA)
-# SUBA
+# Fuel Station Sales Settlement & Invoice Automation System
+# FSSIAS
