@@ -1,0 +1,177 @@
+Table KNA1 {
+MANDT varchar(3) [pk]
+KUNNR varchar(10) [pk]
+NAME1 varchar(40)
+NAME2 varchar(40)
+ORT01 varchar(35)
+PSTLZ varchar(10)
+REGIO varchar(3)
+LAND1 varchar(3)
+TELF1 varchar(16)
+STCD3 varchar(18)
+SMTP_ADDR varchar(241)
+}
+
+Table MARA {
+MANDT varchar(3) [pk]
+MATNR varchar(18) [pk]
+MTART varchar(4)
+MATKL varchar(9)
+MEINS varchar(3)
+ERNAM varchar(12)
+ERDAT date
+LVORM varchar(1)
+}
+
+Table MAKT {
+MANDT varchar(3) [pk]
+MATNR varchar(18) [pk]
+SPRAS varchar(1) [pk]
+MAKTX varchar(40)
+}
+
+Table USR02 {
+MANDT varchar(3) [pk]
+USTYP varchar(1)
+GLTGV date
+GLTGB date
+TRDAT date
+LTIME time
+UFLAG varchar(1)
+BNAME varchar(12) [pk]
+}
+
+Table ZFUEL_STATION_MASTER {
+MANDT varchar(3) [pk]
+STATION_NAME varchar(100)
+DEALER_CODE varchar(10)
+DEALER_NAME varchar(100)
+GST_NUMBER varchar(15)
+STATION_CODE varchar(20) [pk]
+EMAIL_ID varchar(100)
+CREATED_BY varchar(12)
+CREATED_ON date
+CREATED_AT time
+CHANGED_BY varchar(12)
+CHANGED_ON date
+CHANGED_AT time
+IS_ACTIVE varchar(1)
+}
+
+Table ZFUEL_UPLOAD_HDR {
+MANDT varchar(3) [pk]
+UPLOAD_TYPE varchar(10)
+FILE_NAME varchar(255)
+UPLOAD_DATE date
+UPLOAD_ID varchar(20) [pk]
+UPLOAD_TIME time
+TOTAL_RECORDS int
+SUCCESS_RECORDS int
+ERROR_RECORDS int
+STATUS varchar(20)
+CREATED_BY varchar(12)
+CREATED_ON date
+CREATED_AT time
+REMARKS varchar(255)
+}
+
+Table ZFUEL_SETT_HDR {
+MANDT varchar(3) [pk]
+UPLOAD_ID varchar(20)
+STATION_CODE varchar(20)
+SALE_DATE date
+TOTAL_QUANTITY decimal(15,3)
+TOTAL_BASE_AMOUNT decimal(15,2)
+TOTAL_SELLING_AMOUNT decimal(15,2)
+TOTAL_TAX_AMOUNT decimal(15,2)
+TOTAL_NET_AMOUNT decimal(15,2)
+CURRENCY varchar(5)
+STATUS varchar(20)
+CREATED_BY varchar(12)
+CREATED_ON date
+CREATED_AT time
+REMARKS varchar(255)
+SETTLEMENT_NO varchar(20) [pk]
+}
+
+Table ZFUEL_SETT_ITEM {
+MANDT varchar(3) [pk]
+SETTLEMENT_NO varchar(20) [pk]
+ITEM_NO varchar(6) [pk]
+RECORD_ID varchar(20)
+PRODUCT_CODE varchar(18)
+PRODUCT_DESC varchar(100)
+QUANTITY decimal(15,3)
+BASE_RATE decimal(15,2)
+SELLING_RATE decimal(15,2)
+TOTAL_AMOUNT decimal(15,2)
+PAYMENT_MODE varchar(20)
+INVOICE_REF_NO varchar(20)
+TAX_AMOUNT decimal(15,2)
+NET_AMOUNT decimal(15,2)
+REMARKS varchar(255)
+}
+
+Table ZFUEL_ERROR_LOG {
+MANDT varchar(3) [pk]
+UPLOAD_ID varchar(20) [pk]
+ROW_NO int [pk]
+RECORD_ID varchar(20)
+ERROR_CODE varchar(20)
+ERROR_MESSAGE varchar(255)
+FIELD_NAME varchar(30)
+RECORD_TYPE varchar(10)
+CREATED_BY varchar(12)
+CREATED_ON date
+CREATED_AT time
+}
+
+Table ZFUEL_AUDIT_LOG {
+MANDT varchar(3) [pk]
+AUDIT_ID varchar(20) [pk]
+OBJECT_TYPE varchar(30)
+OBJECT_ID varchar(20)
+ACTION varchar(20)
+USER_NAME varchar(12)
+ACTION_TIMESTAMP decimal(21,0)
+OLD_VALUE varchar(50)
+NEW_VALUE varchar(50)
+REMARKS varchar(255)
+}
+
+Table ZFUEL_APPROVAL {
+MANDT varchar(3) [pk]
+APPROVAL_ID varchar(20) [pk]
+SETTLEMENT_NO varchar(20)
+APPROVER_ID varchar(12)
+APPROVAL_STATUS varchar(20)
+APPROVAL_DATE date
+APPROVAL_TIME time
+COMMENTS varchar(255)
+CREATED_BY varchar(12)
+CREATED_ON date
+}
+
+Ref: ZFUEL_STATION_MASTER.DEALER_CODE > KNA1.KUNNR
+Ref: ZFUEL_STATION_MASTER.CREATED_BY > USR02.BNAME
+Ref: ZFUEL_STATION_MASTER.CHANGED_BY > USR02.BNAME
+
+Ref: ZFUEL_UPLOAD_HDR.CREATED_BY > USR02.BNAME
+
+Ref: ZFUEL_SETT_HDR.UPLOAD_ID > ZFUEL_UPLOAD_HDR.UPLOAD_ID
+Ref: ZFUEL_SETT_HDR.STATION_CODE > ZFUEL_STATION_MASTER.STATION_CODE
+Ref: ZFUEL_SETT_HDR.CREATED_BY > USR02.BNAME
+
+Ref: ZFUEL_SETT_ITEM.SETTLEMENT_NO > ZFUEL_SETT_HDR.SETTLEMENT_NO
+Ref: ZFUEL_SETT_ITEM.PRODUCT_CODE > MARA.MATNR
+
+Ref: ZFUEL_ERROR_LOG.UPLOAD_ID > ZFUEL_UPLOAD_HDR.UPLOAD_ID
+Ref: ZFUEL_ERROR_LOG.CREATED_BY > USR02.BNAME
+
+Ref: ZFUEL_AUDIT_LOG.USER_NAME > USR02.BNAME
+
+Ref: ZFUEL_APPROVAL.SETTLEMENT_NO > ZFUEL_SETT_HDR.SETTLEMENT_NO
+Ref: ZFUEL_APPROVAL.APPROVER_ID > USR02.BNAME
+Ref: ZFUEL_APPROVAL.CREATED_BY > USR02.BNAME
+
+Ref: MAKT.MATNR > MARA.MATNR
