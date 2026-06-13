@@ -3,7 +3,7 @@ FSSIAS
 ## 📊 Database Architecture
 
 To keep our database schema highly accessible, the Entity-Relationship (ER) diagram is hosted live on dbdiagram.io. Click the preview image below to explore the tables, keys, and data relationships in real-time.
-[![Live ER Diagram Preview](FSSIAS.png)]
+[![Live ER Diagram Preview](src/FSSIAS.png)]
 
 
 <p align="center">
