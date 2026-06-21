@@ -7,7 +7,8 @@ To keep our database schema highly accessible, the Entity-Relationship (ER) diag
 ![Live ER Diagram Preview](https://raw.githubusercontent.com/iankitsinghk/fssias/refs/heads/aliva/images%20/FSSIAS.png)
 
 <p align="center">
-  <a href="https://dbdiagram.io/e/6a2d01df9340ecc0658c2dd7/6a2d20065c789b8acb769ee9" target="_blank" rel="noopener noreferrer">
+  <a href="https://dbdiagram.io/e/6a36aa359340ecc065dc52fc/6a3818229340ecc065e22b40" target="_blank" rel="noopener noreferrer">
+    
     <strong>🌐 Open Interactive Database Schema via dbdiagram.io →</strong>
   </a>
 </p>
