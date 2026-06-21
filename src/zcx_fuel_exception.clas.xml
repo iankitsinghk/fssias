@@ -2,17 +2,6 @@
 <abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
-   <VSEOCLASS>
-    <CLSNAME>ZFUEL_EXCEPTION_CX</CLSNAME>
-    <LANGU>E</LANGU>
-    <DESCRIPT>FSSIAS Application Exception</DESCRIPT>
-    <CATEGORY>40</CATEGORY>
-    <STATE>1</STATE>
-    <CLSCCINCL>X</CLSCCINCL>
-    <FIXPT>X</FIXPT>
-    <UNICODE>X</UNICODE>
-    <MSG_ID>ZFUEL_MSG</MSG_ID>
-   </VSEOCLASS>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
      <CMPNAME>CONSTRUCTOR</CMPNAME>

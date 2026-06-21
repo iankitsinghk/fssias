@@ -1,4 +1,4 @@
-class ZFUEL_UTIL_CL definition
+class ZCL_FUEL_UTIL definition
   public
   final
   create private .
@@ -10,5 +10,5 @@ ENDCLASS.
 
 
 
-CLASS ZFUEL_UTIL_CL IMPLEMENTATION.
+CLASS ZCL_FUEL_UTIL IMPLEMENTATION.
 ENDCLASS.
