@@ -3,23 +3,29 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCX_FUEL_EXCEPTION</CLSNAME>
+    <CLSNAME>ZCL_FUEL_EXCEL_READER</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>FSSIAS Custom Exception Class</DESCRIPT>
-    <CATEGORY>40</CATEGORY>
+    <DESCRIPT>Excel Reader</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
-    <MSG_ID>ZFUEL_MSG</MSG_ID>
    </VSEOCLASS>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
-     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <CMPNAME>READ_EXCEL</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>CONSTRUCTOR</DESCRIPT>
+     <DESCRIPT>Read Excel File and Return Data</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>READ_EXCEL</CMPNAME>
+     <SCONAME>IV_FILE_PATH</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Local file for upload/download</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>

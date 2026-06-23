@@ -692,6 +692,12 @@
      <MSGNR>910</MSGNR>
      <TEXT>Contact system administrator</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFUEL_MSG</ARBGB>
+     <MSGNR>999</MSGNR>
+     <TEXT>Please select a file</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

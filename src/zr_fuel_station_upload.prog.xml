@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <PROGDIR>
-    <NAME>ZR_FUEL_UPLOAD</NAME>
+    <NAME>ZR_FUEL_STATION_UPLOAD</NAME>
     <SUBC>1</SUBC>
     <RSTAT>P</RSTAT>
     <RLOAD>E</RLOAD>
@@ -14,13 +14,31 @@
     <item>
      <ID>I</ID>
      <KEY>001</KEY>
-     <ENTRY>Station Master Upload</ENTRY>
+     <ENTRY>Fuel Data Upload</ENTRY>
      <LENGTH>42</LENGTH>
     </item>
     <item>
      <ID>R</ID>
-     <ENTRY>Station Upload -- Report</ENTRY>
-     <LENGTH>24</LENGTH>
+     <ENTRY>Fuel Station Master Upload</ENTRY>
+     <LENGTH>26</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_FILE</KEY>
+     <ENTRY>File Path</ENTRY>
+     <LENGTH>17</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_FILE1</KEY>
+     <ENTRY>Daily Sales</ENTRY>
+     <LENGTH>27</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_FILE2</KEY>
+     <ENTRY>Station Master</ENTRY>
+     <LENGTH>27</LENGTH>
     </item>
    </TPOOL>
   </asx:values>
