@@ -18,3 +18,9 @@ FORM f4_sales_file.
       file_name = p_file2.
 
 ENDFORM.
+
+FORM upload_station_file.
+  ENDFORM.
+
+FORM upload_sales_file.
+  ENDFORM.
