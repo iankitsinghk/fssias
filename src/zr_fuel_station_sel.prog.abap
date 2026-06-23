@@ -6,22 +6,18 @@ SELECTION-SCREEN BEGIN OF BLOCK b1
 WITH FRAME TITLE text-001.
 
 PARAMETERS:
-  p_file1 TYPE rlgrap-filename ,
-  p_file2 TYPE rlgrap-filename.
+  p_sale RADIOBUTTON GROUP rg1 DEFAULT 'X',
+ p_stat RADIOBUTTON GROUP rg1.
+
+PARAMETERS:
+  p_file TYPE rlgrap-filename.
 
 SELECTION-SCREEN END OF BLOCK b1.
 
-AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_file1.
-  PERFORM f4_station_file.
-
-AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_file2.
-  PERFORM f4_sales_file.
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_file.
+  PERFORM f4_file.
 
 AT SELECTION-SCREEN.
-
-  IF p_file1 IS INITIAL
-     AND p_file2 IS INITIAL.
-
-    MESSAGE 'Please select at least one file' TYPE 'E'.
-
-  ENDIF.
+  IF p_file is INITIAL.
+    MESSAGE e999(Zfuel_msg).
+    ENDIF.

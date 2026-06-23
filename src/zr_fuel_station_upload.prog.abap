@@ -12,10 +12,8 @@ INCLUDE zr_fuel_station_f01.
 
 START-OF-SELECTION.
 
-  IF p_file1 IS NOT INITIAL.
+  IF p_sale = 'X'.
     PERFORM upload_station_file.
-  ENDIF.
-
-  IF p_file2 IS NOT INITIAL.
+  ELSEIF p_stat = 'X'.
     PERFORM upload_sales_file.
   ENDIF.
