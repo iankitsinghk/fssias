@@ -10,7 +10,7 @@ PARAMETERS:
  p_stat RADIOBUTTON GROUP rg1.
 
 PARAMETERS:
-  p_file TYPE rlgrap-filename.
+  p_file TYPE string.
 
 SELECTION-SCREEN END OF BLOCK b1.
 
