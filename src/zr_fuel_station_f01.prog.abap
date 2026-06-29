@@ -25,6 +25,32 @@ FORM f4_station_file.
 
 ENDFORM.
 
+FORM upload_excel_file.
 
-FORM upload_station_file.
+  IF p_stat = abap_true.
+
+    gv_success =
+      zcl_fuel_excel_reader=>read_station_excel(
+        EXPORTING
+          iv_file_path    = p_file
+        IMPORTING
+          et_station_data = gt_station_data ).
+
+  ELSEIF p_sale = abap_true.
+
+    gv_success =
+      zcl_fuel_excel_reader=>read_sales_excel(
+        EXPORTING
+          iv_file_path  = p_file
+        IMPORTING
+          et_sales_data = gt_sales_data ).
+
+  ENDIF.
+
+  IF gv_success = abap_true.
+    MESSAGE 'Excel Reader called successfully' TYPE 'S'.
+  ELSE.
+    MESSAGE 'Excel Reader failed' TYPE 'E'.
+  ENDIF.
+
 ENDFORM.

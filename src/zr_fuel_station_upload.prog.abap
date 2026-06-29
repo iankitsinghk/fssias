@@ -13,5 +13,5 @@ INCLUDE zr_fuel_station_f01.
 START-OF-SELECTION.
 
   IF p_file IS NOT INITIAL.
-    PERFORM upload_station_file.
+    PERFORM upload_excel_file.
   ENDIF.
