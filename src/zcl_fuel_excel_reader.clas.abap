@@ -46,10 +46,13 @@ CLASS ZCL_FUEL_EXCEL_READER IMPLEMENTATION.
 
       lt_sheet_names TYPE if_fdt_doc_spreadsheet=>t_worksheet_names,
       lv_sheet_name  TYPE string,
-      lr_data        TYPE REF TO data.
+      lr_data        TYPE REF TO data,
+      ls_station     TYPE zstr_fuel_station_upload.
+*      lv_row         TYPE i.
     FIELD-SYMBOLS:
       <lt_excel> TYPE STANDARD TABLE,
-      <ls_excel> TYPE any.
+      <ls_excel> TYPE any,
+      <lv_value> TYPE any.
 
 
     CALL METHOD cl_gui_frontend_services=>gui_upload
@@ -107,12 +110,85 @@ CLASS ZCL_FUEL_EXCEL_READER IMPLEMENTATION.
 
     ASSIGN lr_data->* TO <lt_excel>.
 
+
     IF sy-subrc <> 0.
       rv_success = zif_fuel_constants=>gc_false.
       RETURN.
     ENDIF.
 
+
+
     LOOP AT <lt_excel> ASSIGNING <ls_excel>.
-      ENDLOOP.
+
+*      lv_row = lv_row + 1.
+
+      "Skip Header Row
+      IF sy-tabix = 1.
+        CONTINUE.
+      ENDIF.
+
+      CLEAR ls_station.
+
+      ASSIGN COMPONENT 'A'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_station-station_code = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'B'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_station-customer_no = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'C'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_station-station_name = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'D'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_station-dealer_code = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'E'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_station-dealer_name = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'F'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_station-gst_number = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'G'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_station-email_id = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'H'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_station-status = <lv_value>.
+      ENDIF.
+
+      APPEND ls_station TO et_station_data.
+
+    ENDLOOP.
+
+    rv_success = zif_fuel_constants=>gc_true.
   ENDMETHOD.
 ENDCLASS.

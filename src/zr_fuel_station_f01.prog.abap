@@ -2,31 +2,6 @@
 *& Include          ZR_FUEL_STATION_F01
 *&---------------------------------------------------------------------*
 
-*FORM f4_station_file.
-*
-*  CALL FUNCTION 'F4_FILENAME'
-*    IMPORTING
-*      file_name = p_file1.
-*
-*ENDFORM.
-*
-*
-*FORM f4_sales_file.
-*
-*  CALL FUNCTION 'F4_FILENAME'
-*    IMPORTING
-*      file_name = p_file2.
-*
-*ENDFORM.
-
-
-*FORM f4_file.
-*
-*  CALL FUNCTION 'F4_FILENAME'
-*    IMPORTING
-*      file_name = p_file.
-*
-*ENDFORM.
 
 FORM f4_file.
 
@@ -53,8 +28,31 @@ FORM f4_file.
 
 ENDFORM.
 
-FORM upload_station_file.
-  ENDFORM.
+FORM upload_excel_file.
 
-FORM upload_sales_file.
-  ENDFORM.
+  IF p_stat = abap_true.
+
+    gv_success =
+      zcl_fuel_excel_reader=>read_station_excel(
+        EXPORTING
+          iv_file_path    = p_file
+        IMPORTING
+          et_station_data = gt_station_data ).
+
+  ELSEIF p_sale = abap_true.
+
+    gv_success =
+      zcl_fuel_excel_reader=>read_sale_excel(
+        EXPORTING
+          iv_file_path  = p_file
+        IMPORTING
+          et_sales_data = gt_sales_data ).
+
+  ENDIF.
+
+IF gv_success = abap_true.
+   MESSAGE 'Excel reader called successfully' type 'S'.
+   ELSE.
+     MESSAGE 'Excel reader failed' type 'E'.
+  ENDIF.
+ENDFORM.
