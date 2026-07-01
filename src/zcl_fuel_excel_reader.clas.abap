@@ -21,6 +21,14 @@ public section.
       value(RV_SUCCESS) type ABAP_BOOL .
 protected section.
 private section.
+
+  class-methods EXTRACT_EXCEL_GRID
+    importing
+      value(IV_FILE_PATH) type STRING
+    exporting
+      value(ER_DATA) type ref to DATA
+    returning
+      value(RV_SUCCESS) type ABAP_BOOL .
 ENDCLASS.
 
 
@@ -39,74 +47,21 @@ CLASS ZCL_FUEL_EXCEL_READER IMPLEMENTATION.
 
   METHOD read_station_excel.
     DATA:
-      lt_raw_data    TYPE solix_tab,
-      lv_size        TYPE i,
-      lv_xstring     TYPE xstring,
-      lo_excel       TYPE REF TO cl_fdt_xl_spreadsheet,
+      lr_data    TYPE REF TO data,
+      ls_station TYPE zstr_fuel_station_upload.
 
-      lt_sheet_names TYPE if_fdt_doc_spreadsheet=>t_worksheet_names,
-      lv_sheet_name  TYPE string,
-      lr_data        TYPE REF TO data,
-      ls_station     TYPE zstr_fuel_station_upload.
-*      lv_row         TYPE i.
     FIELD-SYMBOLS:
       <lt_excel> TYPE STANDARD TABLE,
       <ls_excel> TYPE any,
       <lv_value> TYPE any.
 
+    CLEAR et_station_data.
 
-    CALL METHOD cl_gui_frontend_services=>gui_upload
-      EXPORTING
-        filename   = iv_file_path
-        filetype   = 'BIN'
-      IMPORTING
-        filelength = lv_size
-      CHANGING
-        data_tab   = lt_raw_data
-      EXCEPTIONS
-        OTHERS     = 1.
-
-    IF sy-subrc <> 0.
-      rv_success = zif_fuel_constants=>gc_false.
+    rv_success = extract_excel_grid( EXPORTING iv_file_path = iv_file_path
+                                       IMPORTING er_data      = lr_data ).
+    IF rv_success = zif_fuel_constants=>gc_false.
       RETURN.
     ENDIF.
-
-    CALL FUNCTION 'SCMS_BINARY_TO_XSTRING'
-      EXPORTING
-        input_length = lv_size
-      IMPORTING
-        buffer       = lv_xstring
-      TABLES
-        binary_tab   = lt_raw_data.
-
-    TRY.
-
-        lo_excel = NEW cl_fdt_xl_spreadsheet(
-                     document_name = iv_file_path
-                     xdocument     = lv_xstring ).
-
-      CATCH cx_fdt_excel_core INTO DATA(lx_excel).
-
-        rv_success = zif_fuel_constants=>gc_false.
-        RETURN.
-
-    ENDTRY.
-
-    CALL METHOD lo_excel->if_fdt_doc_spreadsheet~get_worksheet_names
-      IMPORTING
-        worksheet_names = lt_sheet_names.
-
-    READ TABLE lt_sheet_names
-         INDEX 1
-         INTO lv_sheet_name.
-
-    IF sy-subrc <> 0.
-      rv_success = zif_fuel_constants=>gc_false.
-      RETURN.
-    ENDIF.
-
-    lr_data = lo_excel->if_fdt_doc_spreadsheet~get_itab_from_worksheet(
-                 worksheet_name = lv_sheet_name ).
 
     ASSIGN lr_data->* TO <lt_excel>.
 
@@ -119,8 +74,6 @@ CLASS ZCL_FUEL_EXCEL_READER IMPLEMENTATION.
 
 
     LOOP AT <lt_excel> ASSIGNING <ls_excel>.
-
-*      lv_row = lv_row + 1.
 
       "Skip Header Row
       IF sy-tabix = 1.
@@ -185,10 +138,79 @@ CLASS ZCL_FUEL_EXCEL_READER IMPLEMENTATION.
         ls_station-status = <lv_value>.
       ENDIF.
 
-      APPEND ls_station TO et_station_data.
+
+      IF ls_station IS NOT INITIAL.
+        APPEND ls_station TO et_station_data.
+      ENDIF.
 
     ENDLOOP.
 
     rv_success = zif_fuel_constants=>gc_true.
   ENDMETHOD.
+
+
+  method EXTRACT_EXCEL_GRID.
+DATA:
+      lt_raw_data    TYPE solix_tab,
+      lv_size        TYPE i,
+      lv_xstring     TYPE xstring,
+      lo_excel       TYPE REF TO cl_fdt_xl_spreadsheet,
+      lt_sheet_names TYPE if_fdt_doc_spreadsheet=>t_worksheet_names,
+      lv_sheet_name  TYPE string.
+
+    CALL METHOD cl_gui_frontend_services=>gui_upload
+      EXPORTING
+        filename   = iv_file_path
+        filetype   = 'BIN'
+      IMPORTING
+        filelength = lv_size
+      CHANGING
+        data_tab   = lt_raw_data
+      EXCEPTIONS
+        OTHERS     = 1.
+
+    IF sy-subrc <> 0.
+      rv_success = zif_fuel_constants=>gc_false.
+      RETURN.
+    ENDIF.
+
+    CALL FUNCTION 'SCMS_BINARY_TO_XSTRING'
+      EXPORTING
+        input_length = lv_size
+      IMPORTING
+        buffer       = lv_xstring
+      TABLES
+        binary_tab   = lt_raw_data.
+
+    TRY.
+
+        lo_excel = NEW cl_fdt_xl_spreadsheet(
+                     document_name = iv_file_path
+                     xdocument     = lv_xstring ).
+
+      CATCH cx_fdt_excel_core INTO DATA(lx_excel).
+
+        rv_success = zif_fuel_constants=>gc_false.
+        RETURN.
+
+    ENDTRY.
+
+    CALL METHOD lo_excel->if_fdt_doc_spreadsheet~get_worksheet_names
+      IMPORTING
+        worksheet_names = lt_sheet_names.
+
+    READ TABLE lt_sheet_names
+         INDEX 1
+         INTO lv_sheet_name.
+
+    IF sy-subrc <> 0.
+      rv_success = zif_fuel_constants=>gc_false.
+      RETURN.
+    ENDIF.
+
+er_data = lo_excel->if_fdt_doc_spreadsheet~get_itab_from_worksheet(
+                 worksheet_name = lv_sheet_name ).
+
+  rv_success = zif_fuel_constants=>gc_true.
+  endmethod.
 ENDCLASS.
