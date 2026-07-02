@@ -36,13 +36,122 @@ ENDCLASS.
 CLASS ZCL_FUEL_EXCEL_READER IMPLEMENTATION.
 
 
-  method READ_SALE_EXCEL.
-    DATA: lv_raw_data type solix_tab,
-          lv_size type i,
-          lv_xstring type xstring,
-          lo_excel type ref to cl_fdt_xl_spreadsheet.
+  METHOD read_sale_excel.
+    DATA:
+      lr_data TYPE REF TO data,
+      ls_sale TYPE zstr_fuel_sales_upload.
 
-  endmethod.
+    FIELD-SYMBOLS:
+      <lt_excel> TYPE STANDARD TABLE,
+      <ls_excel> TYPE any,
+      <lv_value> TYPE any.
+
+    CLEAR et_sales_data.
+
+    rv_success = extract_excel_grid( EXPORTING iv_file_path = iv_file_path
+                                       IMPORTING er_data      = lr_data ).
+    IF rv_success = zif_fuel_constants=>gc_false.
+      RETURN.
+    ENDIF.
+
+    ASSIGN lr_data->* TO <lt_excel>.
+
+
+    IF sy-subrc <> 0.
+      rv_success = zif_fuel_constants=>gc_false.
+      RETURN.
+    ENDIF.
+
+
+
+    LOOP AT <lt_excel> ASSIGNING <ls_excel>.
+
+      "Skip Header Row
+      IF sy-tabix = 1.
+        CONTINUE.
+      ENDIF.
+
+      CLEAR ls_sale.
+
+      ASSIGN COMPONENT 'A'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_sale-record_id = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'B'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_sale-sales_date = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'C'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_sale-station_code = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'D'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_sale-product_code = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'E'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_sale-quantity = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'F'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_sale-base_rate = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'G'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_sale-selling_rate = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'H'
+        OF STRUCTURE <ls_excel>
+        TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_sale-currency_code = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'I'
+              OF STRUCTURE <ls_excel>
+              TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_sale-payment_mode = <lv_value>.
+      ENDIF.
+
+      ASSIGN COMPONENT 'J'
+              OF STRUCTURE <ls_excel>
+              TO <lv_value>.
+      IF sy-subrc = 0.
+        ls_sale-invoice_ref_no = <lv_value>.
+      ENDIF.
+
+IF ls_sale IS NOT INITIAL.
+        APPEND ls_sale TO et_sales_data.
+      ENDIF.
+
+
+    ENDLOOP.
+
+    rv_success = zif_fuel_constants=>gc_true.
+  ENDMETHOD.
 
 
   METHOD read_station_excel.
