@@ -1,0 +1,25 @@
+name: FSSIAS CI
+
+on:
+  push:
+    branches:
+      - aliva
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Display Branch
+        run: echo "Running workflow for Aliva branch"
+
+      - name: Check Repository
+        run: |
+          echo "Checking repository structure..."
+          ls -R
+
+      - name: Success
+        run: echo "Workflow completed successfully!"
